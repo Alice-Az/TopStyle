@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { GetProducts } from "./service/ProductAPI";
+import PrimarySearchAppBar from "./components/AppBar/AppBar";
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -12,11 +13,14 @@ function App() {
     }, []);
 
     return (
-        <div>
-            {products.map((product) => (
-                <p key={product?.ID}>{product?.Name}</p>
-            ))}
-        </div>
+        <>
+            <PrimarySearchAppBar></PrimarySearchAppBar>
+            <div>
+                {products.map((product) => (
+                    <p key={product?.ID}>{product?.Name}</p>
+                ))}
+            </div>
+        </>
     );
 }
 
