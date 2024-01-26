@@ -1,27 +1,26 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import { GetProducts } from "./service/ProductAPI";
 import PrimarySearchAppBar from "./components/AppBar/AppBar";
+import ProductGrid from "./components/ProductGrid/ProductGrid";
+import AppProvider from "./context/AppProvider";
+import { Routes, Route } from "react-router-dom";
+import ProductPage from "./views/ProductPage/ProductPage";
 
-function App() {
-    const [products, setProducts] = useState([]);
-
-    useEffect(() => {
-        GetProducts().then((returnProducts) => {
-            setProducts(returnProducts);
-        });
-    }, []);
-
+const App = () => {
     return (
         <>
-            <PrimarySearchAppBar></PrimarySearchAppBar>
-            <div>
-                {products.map((product) => (
-                    <p key={product?.ID}>{product?.Name}</p>
-                ))}
-            </div>
+            <AppProvider>
+                <PrimarySearchAppBar />
+                <Routes>
+                    <Route exact path="" element={<ProductGrid />} />
+                    <Route
+                        path="/product/:productID"
+                        element={<ProductPage />}
+                    />
+                </Routes>
+            </AppProvider>
         </>
     );
-}
+};
 
 export default App;

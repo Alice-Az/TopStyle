@@ -11,6 +11,9 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import "./AppBar.css";
+import { useContext, useRef, useEffect } from "react";
+import { AppContext } from "../../context/AppProvider";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -53,6 +56,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+    const { GetProducts } = useContext(AppContext);
+    const searchValue = useRef();
+
+    const handleClick = () => {
+        GetProducts(searchValue.current.value);
+        console.log(searchValue);
+    };
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -152,14 +163,16 @@ export default function PrimarySearchAppBar() {
                     >
                         TopStyle
                     </Typography>
-                    <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{ "aria-label": "search" }}
+                    <Search sx={{ padding: 0 }}>
+                        <input
+                            type="text"
+                            ref={searchValue}
+                            className="search-input"
+                            placeholder="Search products..."
                         />
+                        <IconButton color="ternary" onClick={handleClick}>
+                            <SearchIcon />
+                        </IconButton>
                     </Search>
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
                         <IconButton
