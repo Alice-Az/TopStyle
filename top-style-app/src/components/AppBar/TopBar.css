@@ -16,3 +16,9 @@
 .search-input::placeholder {
     color:rgb(201, 216, 231);
 }
+
+.top-bar-icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

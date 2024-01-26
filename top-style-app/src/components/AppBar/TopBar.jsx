@@ -11,9 +11,10 @@ import Menu from "@mui/material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import "./AppBar.css";
-import { useContext, useRef, useEffect } from "react";
+import "./TopBar.css";
+import { useContext, useRef } from "react";
 import { AppContext } from "../../context/AppProvider";
+import CartIcon from "./CartIcon";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -31,37 +32,12 @@ const Search = styled("div")(({ theme }) => ({
     },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create("width"),
-        width: "100%",
-        [theme.breakpoints.up("md")]: {
-            width: "20ch",
-        },
-    },
-}));
-
-export default function PrimarySearchAppBar() {
+const TopBar = () => {
     const { GetProducts } = useContext(AppContext);
     const searchValue = useRef();
 
     const handleClick = () => {
         GetProducts(searchValue.current.value);
-        console.log(searchValue);
     };
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -174,19 +150,24 @@ export default function PrimarySearchAppBar() {
                             <SearchIcon />
                         </IconButton>
                     </Search>
-                    <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                    </Box>
+                    <div className="top-bar-icons">
+                        <CartIcon />
+                        <Box sx={{ display: { xs: "none", md: "flex" } }}>
+                            <IconButton
+                                size="large"
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                                sx={{ marginLeft: "5px" }}
+                            >
+                                <AccountCircle />
+                            </IconButton>
+                        </Box>
+                    </div>
+
                     <Box sx={{ display: { xs: "flex", md: "none" } }}>
                         <IconButton
                             size="large"
@@ -205,4 +186,6 @@ export default function PrimarySearchAppBar() {
             {renderMenu}
         </Box>
     );
-}
+};
+
+export default TopBar;

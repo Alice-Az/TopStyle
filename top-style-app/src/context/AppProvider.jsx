@@ -7,6 +7,19 @@ const AppProvider = (props) => {
 
     const [product, setProduct] = useState();
 
+    const [basketList, setBasket] = useState([]);
+
+    const AddProductToBasket = (product) => {
+        setBasket([...basketList, product]);
+    };
+
+    const RemoveProductFromBasket = (productToRemove) => {
+        const updatedBasket = basketList.filter(
+            (product) => productToRemove !== product
+        );
+        setBasket(updatedBasket);
+    };
+
     const GetProducts = (input) => {
         FetchProducts(input).then((data) => {
             setProducts(data !== undefined ? data : []);
@@ -26,6 +39,9 @@ const AppProvider = (props) => {
                 GetProducts,
                 GetProduct,
                 product,
+                AddProductToBasket,
+                RemoveProductFromBasket,
+                basketList,
             }}
         >
             {props.children}

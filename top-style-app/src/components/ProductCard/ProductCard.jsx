@@ -23,7 +23,7 @@ const ProductCard = ({ product }) => {
                 <CardMedia
                     sx={{ pt: "100%", objectFit: "contain" }}
                     image={product.Image}
-                    title="green iguana"
+                    title={`image of ${product.Name}`}
                 />
                 <CardContent
                     sx={{
@@ -33,10 +33,19 @@ const ProductCard = ({ product }) => {
                         justifyContent: "space-between",
                     }}
                 >
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        textAlign="center"
+                    >
                         {product.Name}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        textAlign="center"
+                    >
                         {product.Price}kr
                     </Typography>
                 </CardContent>

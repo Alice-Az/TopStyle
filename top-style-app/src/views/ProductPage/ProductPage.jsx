@@ -11,12 +11,17 @@ import { AppContext } from "../../context/AppProvider";
 import "./ProductPage.css";
 
 const ProductPage = () => {
-    const { product, GetProduct } = useContext(AppContext);
+    const { product, GetProduct, AddProductToBasket, basketList } =
+        useContext(AppContext);
     let { productID } = useParams();
 
     useEffect(() => {
         GetProduct(productID);
     }, []);
+
+    const handleAddToBasket = () => {
+        AddProductToBasket(product);
+    };
 
     return (
         <div className="product-page">
@@ -50,7 +55,11 @@ const ProductPage = () => {
                         </Typography>
                     </CardContent>
                     <CardActions sx={{ marginLeft: "30px" }}>
-                        <Button variant="contained" size="small">
+                        <Button
+                            variant="contained"
+                            size="small"
+                            onClick={handleAddToBasket}
+                        >
                             Add to basket
                         </Button>
                     </CardActions>
