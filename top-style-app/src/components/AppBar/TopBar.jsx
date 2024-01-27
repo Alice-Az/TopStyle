@@ -32,7 +32,7 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const TopBar = () => {
-    const { GetProducts } = useContext(AppContext);
+    const { GetProducts, currentUser, LogOut } = useContext(AppContext);
     const searchValue = useRef();
 
     const handleClick = () => {
@@ -49,6 +49,11 @@ const TopBar = () => {
 
     const handleMenuClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleLogOut = () => {
+        handleMenuClose();
+        LogOut();
     };
 
     const menuId = "primary-search-account-menu";
@@ -68,22 +73,37 @@ const TopBar = () => {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>
-                <NavLink
-                    to="/sign-in"
-                    style={{ color: "#000000", width: "100%" }}
-                >
-                    Sign in
-                </NavLink>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-                <NavLink
-                    to="/sign-up"
-                    style={{ color: "#000000", width: "100%" }}
-                >
-                    Create Account
-                </NavLink>
-            </MenuItem>
+            {currentUser === null ? (
+                <div>
+                    <MenuItem onClick={handleMenuClose}>
+                        <NavLink
+                            to="/sign-in"
+                            style={{ color: "#000000", width: "100%" }}
+                        >
+                            Sign in
+                        </NavLink>
+                    </MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
+                        <NavLink
+                            to="/sign-up"
+                            style={{
+                                color: "darkgrey",
+                                width: "100%",
+                                fontStyle: "italic",
+                                fontSize: "0.8rem",
+                            }}
+                        >
+                            Sign up!
+                        </NavLink>
+                    </MenuItem>
+                </div>
+            ) : (
+                <MenuItem onClick={handleLogOut}>
+                    <NavLink to="/" style={{ color: "#000000", width: "100%" }}>
+                        Sign out
+                    </NavLink>
+                </MenuItem>
+            )}
         </Menu>
     );
 

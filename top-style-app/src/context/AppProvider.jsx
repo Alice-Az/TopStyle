@@ -1,5 +1,5 @@
 import { useState, createContext } from "react";
-import { FetchProducts, FetchProduct } from "../service/ProductAPI";
+import { FetchProducts, FetchProduct, LogIn } from "../service/ProductAPI";
 export const AppContext = createContext();
 import uuid from "react-uuid";
 
@@ -9,6 +9,31 @@ const AppProvider = (props) => {
     const [product, setProduct] = useState();
 
     const [basketList, setBasket] = useState([]);
+
+    const [currentUser, setCurrentUser] = useState(null);
+
+    const [loginError, setLoginError] = useState(null);
+
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const LoginAttempt = (loginInfo) => {
+        LogIn(loginInfo).then((data) => {
+            if (typeof data !== "string") {
+                setCurrentUser(data);
+                localStorage.setItem("currentUser", JSON.stringify(data));
+            } else setLoginError(data);
+        });
+    };
+
+    const LogOut = () => {
+        localStorage.removeItem("currentUser");
+        setCurrentUser(null);
+    };
+
+    const LoadUser = () => {
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        setCurrentUser(user ?? null);
+    };
 
     const LoadBasket = () => {
         const basket = JSON.parse(localStorage.getItem("basketList"));
@@ -55,7 +80,13 @@ const AppProvider = (props) => {
                 AddProductToBasket,
                 RemoveProductFromBasket,
                 basketList,
-                LoadBasket
+                LoadBasket,
+                LoginAttempt,
+                currentUser,
+                loginError,
+                setLoginError,
+                LoadUser,
+                LogOut,
             }}
         >
             {props.children}

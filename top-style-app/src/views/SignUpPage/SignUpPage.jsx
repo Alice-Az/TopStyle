@@ -8,7 +8,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
 
-export default function SignUpPage() {
+const SignUpPage = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -101,4 +101,6 @@ export default function SignUpPage() {
             </Box>
         </div>
     );
-}
+};
+
+export default SignUpPage;
