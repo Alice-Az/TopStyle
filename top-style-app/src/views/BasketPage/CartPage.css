@@ -1,0 +1,17 @@
+.cart-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* .product-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-bottom: 2px solid grey;
+    text-align: center;
+} */
+
+
+

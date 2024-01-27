@@ -11,7 +11,7 @@ const CartIcon = () => {
             to={"/basket"}
             style={{
                 textDecorationLine: "none",
-                textDecorationColor: "#f5f6f7",
+                color: "#ffffff",
             }}
         >
             <Box sx={{ display: { xs: "none", md: "flex" } }}>

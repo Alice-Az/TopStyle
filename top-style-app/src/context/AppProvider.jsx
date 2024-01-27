@@ -1,6 +1,7 @@
 import { useState, createContext } from "react";
 import { FetchProducts, FetchProduct } from "../service/ProductAPI";
 export const AppContext = createContext();
+import uuid from "react-uuid";
 
 const AppProvider = (props) => {
     const [products, setProducts] = useState([]);
@@ -9,15 +10,27 @@ const AppProvider = (props) => {
 
     const [basketList, setBasket] = useState([]);
 
+    const LoadBasket = () => {
+        const basket = JSON.parse(localStorage.getItem("basketList"));
+        setBasket(basket ?? []);
+    };
+
+    const SaveBasket = (basket) => {
+        localStorage.setItem("basketList", JSON.stringify(basket));
+        setBasket(basket);
+    };
+
     const AddProductToBasket = (product) => {
-        setBasket([...basketList, product]);
+        const basketItem = { ...product, tempID: uuid() };
+        const newBasketList = [...basketList, basketItem];
+        SaveBasket(newBasketList);
     };
 
     const RemoveProductFromBasket = (productToRemove) => {
         const updatedBasket = basketList.filter(
             (product) => productToRemove !== product
         );
-        setBasket(updatedBasket);
+        SaveBasket(updatedBasket);
     };
 
     const GetProducts = (input) => {
@@ -42,6 +55,7 @@ const AppProvider = (props) => {
                 AddProductToBasket,
                 RemoveProductFromBasket,
                 basketList,
+                LoadBasket
             }}
         >
             {props.children}
