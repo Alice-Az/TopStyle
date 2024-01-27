@@ -14,7 +14,7 @@ const CartIcon = () => {
                 color: "#ffffff",
             }}
         >
-            <Box sx={{ display: { xs: "none", md: "flex" } }}>
+            <Box>
                 <IconButton
                     size="large"
                     edge="end"

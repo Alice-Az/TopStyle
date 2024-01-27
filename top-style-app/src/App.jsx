@@ -6,6 +6,8 @@ import { Routes, Route } from "react-router-dom";
 import ProductPage from "./views/ProductPage/ProductPage";
 import CartPage from "./views/BasketPage/CartPage";
 import Starter from "./components/Starter/Starter";
+import SignInPage from "./views/SignInPage/SignInPage";
+import SignUpPage from "./views/SignUpPage/SignUpPage";
 
 const App = () => {
     return (
@@ -20,6 +22,8 @@ const App = () => {
                         element={<ProductPage />}
                     />
                     <Route path="/basket" element={<CartPage />} />
+                    <Route path="/sign-in" element={<SignInPage />} />
+                    <Route path="/sign-up" element={<SignUpPage />} />
                 </Routes>
             </AppProvider>
         </>
