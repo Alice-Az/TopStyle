@@ -138,7 +138,11 @@ export const FetchMyOrders = async (userID) => {
                     let order = {
                         orderID: item.orderID,
                         userID: item.userID,
-                        Price: item.price,
+                        price: item.price,
+                        fullName: item.fullName,
+                        address: item.address,
+                        zipCode: item.zipCode,
+                        city: item.city,
                     };
                     orders.push(order);
                 });
@@ -161,7 +165,7 @@ export const FetchOrderDetails = async (orderID) => {
                 orderID: data.orderID,
                 userID: data.userID,
                 Price: data.price,
-                Products: data.products
+                Products: data.products,
             };
 
             return order;

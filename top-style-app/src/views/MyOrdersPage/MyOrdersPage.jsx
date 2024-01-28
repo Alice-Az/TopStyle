@@ -42,7 +42,14 @@ const MyOrdersPage = () => {
                                 </ListItem>
                                 <ListItem sx={{ width: "50%" }}>
                                     <ListItemText>
-                                        Total Price: {order.Price}kr
+                                        Total Price: {order.price}kr
+                                    </ListItemText>
+                                </ListItem>
+                                <ListItem sx={{ width: "50%" }}>
+                                    <ListItemText>
+                                        Delivery address: {order.fullName},{" "}
+                                        {order.address}, {order.zipCode},{" "}
+                                        {order.city}
                                     </ListItemText>
                                 </ListItem>
                                 <ListItem sx={{ width: "15%" }}>
