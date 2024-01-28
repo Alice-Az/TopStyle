@@ -1,0 +1,15 @@
+.order-page {
+    width: 50%;
+}
+
+@media screen and (max-width: 1000px) {
+    .order-page {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .order-page {
+        width: 90%;
+    }
+}

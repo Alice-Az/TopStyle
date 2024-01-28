@@ -22,7 +22,7 @@ const ProductGrid = () => {
         <Box sx={{ flexGrow: 1, width: "100%" }}>
             <Grid container spacing={8}>
                 {products.map((product) => (
-                    <Grid xs={4} key={product.ID}>
+                    <Grid xs={12} sm={6} md={4} key={product.ID}>
                         <ProductCard product={product} />
                     </Grid>
                 ))}

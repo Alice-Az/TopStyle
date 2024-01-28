@@ -5,6 +5,7 @@ import { NavLink, useParams } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppProvider";
 import ProductRow from "./ProductRow";
+import "./OrderPage.css";
 
 const OrderPage = () => {
     const { GetOrderDetails, orderDetails } = useContext(AppContext);
@@ -16,7 +17,7 @@ const OrderPage = () => {
     }, []);
 
     return (
-        <div style={{ width: "50%" }}>
+        <div className="order-page">
             <NavLink to="/my-orders" style={{ color: "rgb(83, 95, 105)" }}>
                 {"<"} Back to my orders
             </NavLink>

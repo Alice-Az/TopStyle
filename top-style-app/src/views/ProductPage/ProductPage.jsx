@@ -35,7 +35,7 @@ const ProductPage = () => {
                 sx={{
                     maxWidth: "100vw",
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: { xs: "column", sm: "row" },
                 }}
             >
                 <CardMedia
@@ -43,7 +43,10 @@ const ProductPage = () => {
                     alt="product image"
                     height="140"
                     image={product?.Image}
-                    style={{ minHeight: "500px", width: "40%" }}
+                    sx={{
+                        minHeight: "500px",
+                        width: { xs: "100%", sm: "60%", md: "50%", lg: "50%" },
+                    }}
                 />
                 <div>
                     <CardContent sx={{ textAlign: "left", marginLeft: "20px" }}>
