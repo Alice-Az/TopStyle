@@ -98,11 +98,24 @@ const TopBar = () => {
                     </MenuItem>
                 </div>
             ) : (
-                <MenuItem onClick={handleLogOut}>
-                    <NavLink to="/" style={{ color: "#000000", width: "100%" }}>
-                        Sign out
-                    </NavLink>
-                </MenuItem>
+                <div>
+                    <MenuItem onClick={handleLogOut}>
+                        <NavLink
+                            to="/"
+                            style={{ color: "#000000", width: "100%" }}
+                        >
+                            Sign out
+                        </NavLink>
+                    </MenuItem>
+                    <MenuItem>
+                        <NavLink
+                            to="/my-orders"
+                            style={{ color: "#000000", width: "100%" }}
+                        >
+                            My orders
+                        </NavLink>
+                    </MenuItem>
+                </div>
             )}
         </Menu>
     );

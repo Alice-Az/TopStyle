@@ -8,6 +8,9 @@ import CartPage from "./views/BasketPage/CartPage";
 import Starter from "./components/Starter/Starter";
 import SignInPage from "./views/SignInPage/SignInPage";
 import SignUpPage from "./views/SignUpPage/SignUpPage";
+import CheckoutPage from "./views/CheckoutPage/CheckoutPage";
+import MyOrdersPage from "./views/MyOrdersPage/MyOrdersPage";
+import OrderPage from "./views/OrderPage/OrderPage";
 
 const App = () => {
     return (
@@ -24,6 +27,9 @@ const App = () => {
                     <Route path="/basket" element={<CartPage />} />
                     <Route path="/sign-in" element={<SignInPage />} />
                     <Route path="/sign-up" element={<SignUpPage />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
+                    <Route path="/my-orders" element={<MyOrdersPage />} />
+                    <Route path="/my-orders/:orderID" element={<OrderPage />} />
                 </Routes>
             </AppProvider>
         </>

@@ -11,7 +11,7 @@ import CartRow from "../../components/CartRow/CartRow";
 import CartTotal from "../../components/CartTotal/CartTotal";
 
 const CartPage = () => {
-    const { basketList } = useContext(AppContext);
+    const { basketList, currentUser } = useContext(AppContext);
 
     const basketIsEmpty = basketList.length == 0;
 
@@ -56,9 +56,20 @@ const CartPage = () => {
                             width: "30%",
                             marginLeft: "35%",
                             marginRight: "35%",
+                            padding: 0,
                         }}
                     >
-                        Continue to checkout
+                        <NavLink
+                            to={currentUser !== null ? "/checkout" : "/sign-in"}
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                color: "white",
+                                padding: "6px 16px",
+                            }}
+                        >
+                            Continue to checkout
+                        </NavLink>
                     </Button>
                 </>
             ) : (
