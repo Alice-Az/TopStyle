@@ -23,7 +23,7 @@ const MyOrdersPage = () => {
     });
 
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box className="orders-page">
             <NavLink
                 to="/"
                 style={{ marginBottom: "3%", color: "rgb(83, 95, 105)" }}
@@ -31,42 +31,88 @@ const MyOrdersPage = () => {
                 {"<"} Back to front page
             </NavLink>
             <Grid container spacing={2} sx={{ padding: "40px 0px" }}>
-                <Grid item xs={12}>
+                <Grid
+                    item
+                    xs={12}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
                     {myOrders.length > 0 ? (
                         myOrders.map((order) => (
                             <List className="orders-list" key={order.orderID}>
                                 <ListItem sx={{ width: "30%" }}>
-                                    <ListItemText>
-                                        Order Number: {order.orderID}
-                                    </ListItemText>
+                                    <p className="row-detail">
+                                        <b
+                                            style={{
+                                                color: "rgb(83, 95, 105)",
+                                            }}
+                                        >
+                                            Order Number:
+                                        </b>{" "}
+                                        {order.orderID}
+                                    </p>
                                 </ListItem>
-                                <ListItem sx={{ width: "50%" }}>
-                                    <ListItemText>
-                                        Total Price: {order.price}kr
-                                    </ListItemText>
+                                <ListItem sx={{ width: "30%" }}>
+                                    <p className="row-detail">
+                                        <b
+                                            style={{
+                                                color: "rgb(83, 95, 105)",
+                                            }}
+                                        >
+                                            Total Price:
+                                        </b>{" "}
+                                        {order.price}kr
+                                    </p>
                                 </ListItem>
-                                <ListItem sx={{ width: "50%" }}>
-                                    <ListItemText>
-                                        Delivery address: {order.fullName},{" "}
-                                        {order.address}, {order.zipCode},{" "}
-                                        {order.city}
-                                    </ListItemText>
+                                <ListItem
+                                    sx={{
+                                        width: "50%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "left",
+                                        alignItems: "start",
+                                    }}
+                                >
+                                    <p className="row-detail">
+                                        <b
+                                            style={{
+                                                color: "rgb(83, 95, 105)",
+                                            }}
+                                        >
+                                            Delivery address:
+                                        </b>{" "}
+                                    </p>
+                                    <p className="row-detail">
+                                        To: <i>{order.fullName}</i>
+                                    </p>
+                                    <p className="row-detail">
+                                        Address: <i>{order.address}</i>
+                                    </p>
+                                    <p className="row-detail">
+                                        ZipCode: <i>{order.zipCode}</i>
+                                    </p>
+                                    <p className="row-detail">
+                                        City: <i>{order.city}</i>
+                                    </p>
                                 </ListItem>
                                 <ListItem sx={{ width: "15%" }}>
                                     <Button
                                         variant="contained"
-                                        sx={{ padding: 0 }}
+                                        sx={{ padding: 0, minWidth: "30px" }}
                                     >
                                         <NavLink
                                             to={"/my-orders/" + order.orderID}
-                                            style={{
-                                                width: "100%",
-                                                height: "100%",
-                                                color: "white",
-                                                padding: "6px 16px",
-                                            }}
+                                            className="navlink-details"
                                         >
-                                            Details
+                                            <span className="navlink-big">
+                                                Details
+                                            </span>{" "}
+                                            <span className="navlink-small">
+                                                {">"}
+                                            </span>
                                         </NavLink>
                                     </Button>
                                 </ListItem>

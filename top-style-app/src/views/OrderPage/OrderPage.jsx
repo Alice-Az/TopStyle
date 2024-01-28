@@ -16,15 +16,16 @@ const OrderPage = () => {
     }, []);
 
     return (
-        <div className="cart-page">
-            <NavLink
-                to="/my-orders"
-                style={{ marginBottom: "3%", color: "rgb(83, 95, 105)" }}
-            >
+        <div style={{ width: "50%" }}>
+            <NavLink to="/my-orders" style={{ color: "rgb(83, 95, 105)" }}>
                 {"<"} Back to my orders
             </NavLink>
             <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2} sx={{ paddingBottom: "40px" }}>
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{ paddingBottom: "40px", marginTop: "40px" }}
+                >
                     <Grid item xs={12}>
                         {orderDetails !== null &&
                         orderDetails.orderID == orderID ? (

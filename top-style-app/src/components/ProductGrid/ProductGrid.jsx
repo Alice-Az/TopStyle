@@ -4,12 +4,18 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { AppContext } from "../../context/AppProvider";
 import { useContext, useEffect } from "react";
 import ProductCard from "../ProductCard/ProductCard";
+import { useParams } from "react-router";
+import { useSearchParams } from "react-router-dom";
 
 const ProductGrid = () => {
     const { products, GetProducts } = useContext(AppContext);
 
+    const [searchParams] = useSearchParams();
+
     useEffect(() => {
-        GetProducts();
+        if (searchParams.get("search") !== null)
+            GetProducts(searchParams.get("search"));
+        else GetProducts();
     }, []);
 
     return (

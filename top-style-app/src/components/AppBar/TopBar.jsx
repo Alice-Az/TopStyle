@@ -13,7 +13,7 @@ import "./TopBar.css";
 import { useContext, useRef } from "react";
 import { AppContext } from "../../context/AppProvider";
 import CartIcon from "./CartIcon";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
     position: "relative",
@@ -35,7 +35,10 @@ const TopBar = () => {
     const { GetProducts, currentUser, LogOut } = useContext(AppContext);
     const searchValue = useRef();
 
+    const navigate = useNavigate();
+
     const handleClick = () => {
+        navigate(`/?search=${searchValue.current.value}`);
         GetProducts(searchValue.current.value);
     };
 
@@ -107,7 +110,7 @@ const TopBar = () => {
                             Sign out
                         </NavLink>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={handleMenuClose}>
                         <NavLink
                             to="/my-orders"
                             style={{ color: "#000000", width: "100%" }}
@@ -138,18 +141,36 @@ const TopBar = () => {
                         variant="h6"
                         noWrap
                         component="div"
-                        sx={{ display: { xs: "flex", sm: "block" } }}
+                        sx={{
+                            display: { xs: "flex", sm: "block" },
+                            minWidth: "40px",
+                        }}
                     >
-                        TopStyle
+                        <span className="icon-big">TopStyle</span>
+                        <span className="icon-small">TS</span>
                     </Typography>
-                    <Search sx={{ padding: 0 }}>
+                    <Search
+                        sx={{
+                            padding: 0,
+                            maxWidth: "250px",
+                            minWidth: "40px",
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            height: "80%",
+                        }}
+                    >
                         <input
                             type="text"
                             ref={searchValue}
                             className="search-input"
                             placeholder="Search products..."
                         />
-                        <IconButton color="ternary" onClick={handleClick}>
+                        <IconButton
+                            onClick={handleClick}
+                            sx={{ color: "white" }}
+                        >
                             <SearchIcon />
                         </IconButton>
                     </Search>

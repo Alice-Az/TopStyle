@@ -5,20 +5,43 @@
     font-size: 1rem;
     margin-left: 10px;
     caret-color: rgb(201, 216, 231);
-    color:aliceblue;
+    color: aliceblue;
+    width: 80%;
 }
 
 .search-input:focus {
-    border:none;
+    border: none;
     outline: none;
 }
 
 .search-input::placeholder {
-    color:rgb(201, 216, 231);
+    color: rgb(201, 216, 231);
 }
 
 .top-bar-icons {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+
+.icon-small {
+    display: none;
+}
+
+@media screen and (max-width: 600px) {
+    .search-input {
+        width: 100px;
+    }
+
+    .search-input::placeholder {
+        font-size: 0.8rem;
+    }
+
+    .icon-small {
+        display: inline;
+    }
+
+    .icon-big {
+        display: none;
+    }
 }

@@ -117,6 +117,10 @@ export const PostOrder = async (order) => {
                 orderID: data.orderID,
                 userID: data.userID,
                 price: data.price,
+                fullName: data.fullName,
+                address: data.address,
+                zipCode: data.zipCode,
+                city: data.city,
             };
             return order;
         })

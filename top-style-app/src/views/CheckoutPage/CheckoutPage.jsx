@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { NavLink } from "react-router-dom";
 import "./CheckoutPage.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../../context/AppProvider";
 import { Button } from "@mui/material";
 import { Alert } from "@mui/material";
@@ -18,13 +18,41 @@ const CheckoutPage = () => {
         PlaceOrder,
         orderIsPlaced,
         setOrderIsPlaced,
+        dataIsOk,
+        setDataIsOk,
     } = useContext(AppContext);
 
     useEffect(() => {
         setOrderIsPlaced(false);
+        setDataIsOk(true);
     }, []);
 
+    const isEmptyOrSpaces = (str) => {
+        return str === null || str.match(/^ *$/) !== null;
+    };
+
+    const CheckUserInput = (
+        inputFullName,
+        inputAddress,
+        inputZipCode,
+        inputCity
+    ) => {
+        if (
+            !isEmptyOrSpaces(inputFullName) &&
+            !isEmptyOrSpaces(inputAddress) &&
+            !isEmptyOrSpaces(inputZipCode) &&
+            !isEmptyOrSpaces(inputCity)
+        )
+            return true;
+        else return false;
+    };
+
     const basketIsEmpty = basketList.length == 0;
+
+    const fullName = useRef();
+    const address = useRef();
+    const zipcode = useRef();
+    const city = useRef();
 
     let cartTotal = 0;
 
@@ -36,14 +64,26 @@ const CheckoutPage = () => {
     };
 
     const handlePlaceOrder = () => {
-        let productsInOrder = [];
-        basketList.forEach((item) => {
-            productsInOrder.push(item.ID);
-        });
-        PlaceOrder({
-            userID: currentUser.userID,
-            productIDs: productsInOrder,
-        });
+        let dataOk = CheckUserInput(
+            fullName.current.value,
+            address.current.value,
+            zipcode.current.value,
+            city.current.value
+        );
+        if (dataOk) {
+            let productsInOrder = [];
+            basketList.forEach((item) => {
+                productsInOrder.push(item.ID);
+            });
+            PlaceOrder({
+                userID: currentUser.userID,
+                productIDs: productsInOrder,
+                fullName: fullName.current.value,
+                address: address.current.value,
+                zipCode: zipcode.current.value,
+                city: city.current.value,
+            });
+        } else setDataIsOk(false);
     };
 
     return (
@@ -84,26 +124,45 @@ const CheckoutPage = () => {
                                     <CartTotal cartTotal={GetTotal()} />
                                 </div>
                                 <div className="delivery-info">
+                                    <p
+                                        style={{
+                                            color: "rgb(83, 95, 105)",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        Fill in your delivery details:
+                                    </p>
                                     <TextField
                                         label="Full name"
                                         className="delivery-input"
+                                        inputRef={fullName}
                                         sx={{ margin: "5px 0px" }}
                                     ></TextField>
                                     <TextField
                                         label="Street adress"
                                         className="delivery-input"
+                                        inputRef={address}
                                         sx={{ margin: "5px 0px" }}
                                     ></TextField>
                                     <TextField
                                         label="Zipcode"
                                         className="delivery-input"
+                                        inputRef={zipcode}
                                         sx={{ margin: "5px 0px" }}
                                     ></TextField>
                                     <TextField
                                         label="City"
                                         className="delivery-input"
+                                        inputRef={city}
                                         sx={{ margin: "5px 0px" }}
                                     ></TextField>
+                                    {!dataIsOk ? (
+                                        <Alert severity="error">
+                                            Incorrect delivery input.
+                                        </Alert>
+                                    ) : (
+                                        <></>
+                                    )}
                                 </div>
                             </div>
                             <Button
