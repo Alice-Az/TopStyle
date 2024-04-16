@@ -11,7 +11,7 @@ const ProductRow = ({ product }) => {
             <ListItem sx={{ width: "150px" }}>
                 <ListItemAvatar>
                     <Avatar
-                        src={product.image}
+                        src={product.productImage}
                         alt=""
                         sx={{
                             height: "70px",
@@ -22,7 +22,7 @@ const ProductRow = ({ product }) => {
                 <ListItemText />
             </ListItem>
             <ListItem sx={{ width: "60%" }}>
-                <ListItemText>{product.name}</ListItemText>
+                <ListItemText>{product.productName}</ListItemText>
             </ListItem>
         </List>
     );

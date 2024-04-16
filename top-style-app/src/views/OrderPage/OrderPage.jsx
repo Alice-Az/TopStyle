@@ -31,10 +31,7 @@ const OrderPage = () => {
                         {orderDetails !== null &&
                         orderDetails.orderID == orderID ? (
                             orderDetails.Products.map((item) => (
-                                <ProductRow
-                                    product={item}
-                                    key={item.productID}
-                                />
+                                <ProductRow product={item} key={item.id} />
                             ))
                         ) : (
                             <></>

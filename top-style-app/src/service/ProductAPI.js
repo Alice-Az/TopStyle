@@ -11,11 +11,11 @@ export const FetchProducts = async (input) => {
             if (data !== null) {
                 data.forEach((item) => {
                     let product = {
-                        ID: item.productID,
-                        Name: item.name,
-                        Description: item.description,
-                        Price: item.price,
-                        Image: item.image,
+                        ID: item.id,
+                        Name: item.productName,
+                        Description: item.productDescription,
+                        Price: item.productPrice,
+                        Image: item.productImage,
                     };
                     products.push(product);
                 });
@@ -40,11 +40,11 @@ export const FetchProduct = async (productID) => {
 
             if (data !== null) {
                 product = {
-                    ID: data.productID,
-                    Name: data.name,
-                    Description: data.description,
-                    Price: data.price,
-                    Image: data.image,
+                    ID: data.id,
+                    Name: data.productName,
+                    Description: data.productDescription,
+                    Price: data.productPrice,
+                    Image: data.productImage,
                 };
             }
             // console.log(products);
@@ -69,7 +69,7 @@ export const CreateUser = async (userInfo) => {
         .then((data) => {
             if (typeof data !== "string") {
                 const user = {
-                    userID: data.userId,
+                    userID: data.id,
                     userEmail: data.userEmail,
                 };
                 return user;
@@ -92,7 +92,7 @@ export const LogIn = async (userInfo) => {
         .then((data) => {
             if (typeof data !== "string") {
                 const user = {
-                    userID: data.userId,
+                    userID: data.id,
                     userEmail: data.userEmail,
                 };
                 return user;
@@ -114,9 +114,9 @@ export const PostOrder = async (order) => {
         .then((response) => response.json())
         .then((data) => {
             const order = {
-                orderID: data.orderID,
-                userID: data.userID,
-                price: data.price,
+                orderID: data.id,
+                userID: data.userId,
+                price: data.orderPrice,
                 fullName: data.fullName,
                 address: data.address,
                 zipCode: data.zipCode,
@@ -140,9 +140,9 @@ export const FetchMyOrders = async (userID) => {
             if (data !== null) {
                 data.forEach((item) => {
                     let order = {
-                        orderID: item.orderID,
-                        userID: item.userID,
-                        price: item.price,
+                        orderID: item.id,
+                        userID: item.userId,
+                        price: item.orderPrice,
                         fullName: item.fullName,
                         address: item.address,
                         zipCode: item.zipCode,
@@ -166,9 +166,9 @@ export const FetchOrderDetails = async (orderID) => {
         .then((response) => response.json())
         .then((data) => {
             let order = {
-                orderID: data.orderID,
-                userID: data.userID,
-                Price: data.price,
+                orderID: data.id,
+                userID: data.userId,
+                Price: data.orderPrice,
                 Products: data.products,
             };
 
