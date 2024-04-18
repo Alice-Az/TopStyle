@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./CheckoutPage.css";
 import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../../context/AppProvider";
@@ -20,11 +20,16 @@ const CheckoutPage = () => {
         setOrderIsPlaced,
         dataIsOk,
         setDataIsOk,
+        LoadUser,
+        isUserValid,
     } = useContext(AppContext);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         setOrderIsPlaced(false);
         setDataIsOk(true);
+        LoadUser();
     }, []);
 
     const isEmptyOrSpaces = (str) => {
@@ -64,26 +69,31 @@ const CheckoutPage = () => {
     };
 
     const handlePlaceOrder = () => {
-        let dataOk = CheckUserInput(
-            fullName.current.value,
-            address.current.value,
-            zipcode.current.value,
-            city.current.value
-        );
-        if (dataOk) {
-            let productsInOrder = [];
-            basketList.forEach((item) => {
-                productsInOrder.push(item.ID);
-            });
-            PlaceOrder({
-                userID: currentUser.userID,
-                productIDs: productsInOrder,
-                fullName: fullName.current.value,
-                address: address.current.value,
-                zipCode: zipcode.current.value,
-                city: city.current.value,
-            });
-        } else setDataIsOk(false);
+        if (!isUserValid(currentUser)) {
+            LoadUser();
+            navigate("/sign-in");
+        } else {
+            let dataOk = CheckUserInput(
+                fullName.current.value,
+                address.current.value,
+                zipcode.current.value,
+                city.current.value
+            );
+            if (dataOk) {
+                let productsInOrder = [];
+                basketList.forEach((item) => {
+                    productsInOrder.push(item.ID);
+                });
+                PlaceOrder({
+                    userID: currentUser.userID,
+                    productIDs: productsInOrder,
+                    fullName: fullName.current.value,
+                    address: address.current.value,
+                    zipCode: zipcode.current.value,
+                    city: city.current.value,
+                });
+            } else setDataIsOk(false);
+        }
     };
 
     return (

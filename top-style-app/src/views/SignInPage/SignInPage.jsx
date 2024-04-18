@@ -12,8 +12,13 @@ import { useContext, useEffect } from "react";
 import { Alert } from "@mui/material";
 
 const SignInPage = () => {
-    const { currentUser, LoginAttempt, loginError, setLoginError } =
-        useContext(AppContext);
+    const {
+        currentUser,
+        LoginAttempt,
+        loginError,
+        setLoginError,
+        isSessionExpired,
+    } = useContext(AppContext);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,7 +30,7 @@ const SignInPage = () => {
     };
 
     useEffect(() => {
-        setLoginError(null);
+        setLoginError(false);
     }, []);
 
     return (
@@ -45,77 +50,86 @@ const SignInPage = () => {
                     You are logged in!
                 </Alert>
             ) : (
-                <Box
-                    sx={{
-                        marginTop: 5,
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                    }}
-                >
-                    <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
+                <>
+                    {isSessionExpired ? (
+                        <Alert severity="warning">
+                            Your session has expired, please login again
+                        </Alert>
+                    ) : (
+                        <></>
+                    )}
                     <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        noValidate
-                        sx={{ mt: 1, width: "100%" }}
+                        sx={{
+                            marginTop: 5,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                        }}
                     >
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                        />
-                        {loginError !== null ? (
-                            <Alert severity="error">
-                                Email or password incorrect
-                            </Alert>
-                        ) : (
-                            <></>
-                        )}
-
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
+                        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography component="h1" variant="h5">
+                            Sign in
+                        </Typography>
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            noValidate
+                            sx={{ mt: 1, width: "100%" }}
                         >
-                            Sign In
-                        </Button>
-                        <Grid container>
-                            <Grid item>
-                                <NavLink
-                                    to="/sign-up"
-                                    variant="body2"
-                                    style={{
-                                        color: "darkgrey",
-                                        fontWeight: "normal",
-                                        textDecorationLine: "underline",
-                                    }}
-                                >
-                                    Don't have an account yet? Sign up!
-                                </NavLink>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoFocus
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                            />
+                            {loginError === true ? (
+                                <Alert severity="error">
+                                    Email or password incorrect
+                                </Alert>
+                            ) : (
+                                <></>
+                            )}
+
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                sx={{ mt: 3, mb: 2 }}
+                            >
+                                Sign In
+                            </Button>
+                            <Grid container>
+                                <Grid item>
+                                    <NavLink
+                                        to="/sign-up"
+                                        variant="body2"
+                                        style={{
+                                            color: "darkgrey",
+                                            fontWeight: "normal",
+                                            textDecorationLine: "underline",
+                                        }}
+                                    >
+                                        Don't have an account yet? Sign up!
+                                    </NavLink>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                </Box>
+                </>
             )}
         </div>
     );

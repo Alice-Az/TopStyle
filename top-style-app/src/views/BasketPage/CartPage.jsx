@@ -1,9 +1,9 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./CartPage.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AppContext } from "../../context/AppProvider";
 import { Button } from "@mui/material";
 import { Alert } from "@mui/material";
@@ -11,9 +11,25 @@ import CartRow from "../../components/CartRow/CartRow";
 import CartTotal from "../../components/CartTotal/CartTotal";
 
 const CartPage = () => {
-    const { basketList, currentUser } = useContext(AppContext);
+    const { basketList, currentUser, LoadUser, isUserValid } =
+        useContext(AppContext);
+
+    useEffect(() => {
+        LoadUser();
+    }, []);
 
     const basketIsEmpty = basketList.length == 0;
+
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        if (isUserValid(currentUser)) {
+            navigate("/checkout");
+        } else {
+            LoadUser();
+            navigate("/sign-in");
+        }
+    };
 
     let cartTotal = 0;
 
@@ -58,18 +74,13 @@ const CartPage = () => {
                             marginRight: "35%",
                             padding: 0,
                         }}
+                        style={{
+                            color: "white",
+                            padding: "6px 16px",
+                        }}
+                        onClick={handleClick}
                     >
-                        <NavLink
-                            to={currentUser !== null ? "/checkout" : "/sign-in"}
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                                color: "white",
-                                padding: "6px 16px",
-                            }}
-                        >
-                            Continue to checkout
-                        </NavLink>
+                        Continue to checkout
                     </Button>
                 </>
             ) : (

@@ -90,16 +90,11 @@ export const LogIn = async (userInfo) => {
     })
         .then((response) => response.json())
         .then((data) => {
-            if (typeof data !== "string") {
-                const user = {
-                    userID: data.id,
-                    userEmail: data.userEmail,
-                };
-                return user;
-            } else return data;
+            console.log(data);
+            return data;
         })
-        .catch((error) => {
-            return error;
+        .catch(() => {
+            return null;
         });
 };
 

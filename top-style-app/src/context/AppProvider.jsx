@@ -9,6 +9,8 @@ import {
     FetchOrderDetails,
 } from "../service/ProductAPI";
 import uuid from "react-uuid";
+import { jwtDecode } from "jwt-decode";
+
 export const AppContext = createContext();
 
 const AppProvider = (props) => {
@@ -34,14 +36,15 @@ const AppProvider = (props) => {
 
     const [orderDetails, setOrderDetails] = useState(null);
 
-    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isSessionExpired, setIsSessionExpired] = useState(false);
 
     const LoginAttempt = (loginInfo) => {
         LogIn(loginInfo).then((data) => {
-            if (typeof data !== "string") {
+            if (data !== null) {
                 setCurrentUser(data);
-                localStorage.setItem("currentUser", JSON.stringify(data));
-            } else setLoginError(data);
+                setIsSessionExpired(false);
+                localStorage.setItem("currentUser", data);
+            } else setLoginError(true);
         });
     };
 
@@ -51,8 +54,47 @@ const AppProvider = (props) => {
     };
 
     const LoadUser = () => {
-        const user = JSON.parse(localStorage.getItem("currentUser"));
-        setCurrentUser(user ?? null);
+        const token = localStorage.getItem("currentUser");
+        if (token !== null) {
+            const decodedToken = CheckTokenValidity(token);
+            if (decodedToken !== null) {
+                const user = {
+                    userID: decodedToken[
+                        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid"
+                    ],
+                    userEmail:
+                        decodedToken[
+                            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+                        ],
+                    exp: decodedToken.exp,
+                };
+                setCurrentUser(user);
+            } else {
+                setCurrentUser(null);
+                setIsSessionExpired(true);
+                localStorage.removeItem("currentUser");
+            }
+        } else {
+            setCurrentUser(null);
+            setIsSessionExpired(false);
+        }
+    };
+
+    const isUserValid = (user) => {
+        if (user !== null) {
+            const currentTimestamp = Math.floor(Date.now() / 1000);
+            console.log(user.exp > currentTimestamp);
+            return user.exp > currentTimestamp;
+        }
+        console.log("lafja");
+        return false;
+    };
+
+    const CheckTokenValidity = (token) => {
+        const decodedToken = jwtDecode(token);
+        console.log(decodedToken);
+        const currentTimestamp = Math.floor(Date.now() / 1000);
+        return decodedToken.exp > currentTimestamp ? decodedToken : null;
     };
 
     const SignUp = (userInfo) => {
@@ -137,6 +179,7 @@ const AppProvider = (props) => {
                 loginError,
                 setLoginError,
                 LoadUser,
+                isUserValid,
                 LogOut,
                 usernameTaken,
                 setUsernameTaken,
@@ -151,7 +194,9 @@ const AppProvider = (props) => {
                 GetMyOrders,
                 myOrders,
                 GetOrderDetails,
-                orderDetails
+                orderDetails,
+                isSessionExpired,
+                setIsSessionExpired,
             }}
         >
             {props.children}
