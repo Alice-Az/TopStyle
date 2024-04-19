@@ -32,12 +32,14 @@ const Search = styled("div")(({ theme }) => ({
 }));
 
 const TopBar = () => {
-    const { GetProducts, currentUser, LogOut } = useContext(AppContext);
+    const { GetProducts, currentUser, LogOut, setProducts } =
+        useContext(AppContext);
     const searchValue = useRef();
 
     const navigate = useNavigate();
 
     const handleClick = () => {
+        setProducts(null);
         navigate(`/?search=${searchValue.current.value}`);
         GetProducts(searchValue.current.value);
     };

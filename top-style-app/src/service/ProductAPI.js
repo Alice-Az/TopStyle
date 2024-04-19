@@ -4,8 +4,6 @@ export const FetchProducts = async (input) => {
     return await fetch(url)
         .then((response) => response.json())
         .then((data) => {
-            // console.log(data);
-
             let products = [];
 
             if (data !== null) {
@@ -20,12 +18,9 @@ export const FetchProducts = async (input) => {
                     products.push(product);
                 });
             }
-            // console.log(products);
-
             return products;
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
             return [];
         });
 };
@@ -47,12 +42,10 @@ export const FetchProduct = async (productID) => {
                     Image: data.productImage,
                 };
             }
-            // console.log(products);
 
             return product;
         })
-        .catch((error) => {
-            console.log(error);
+        .catch(() => {
             return null;
         });
 };
@@ -90,7 +83,6 @@ export const LogIn = async (userInfo) => {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             return data;
         })
         .catch(() => {
@@ -119,19 +111,52 @@ export const PostOrder = async (order) => {
             };
             return order;
         })
-        .catch((error) => {
-            return error;
+        .catch(() => {
+            return null;
         });
 };
 
-export const FetchMyOrders = async (userID) => {
-    let url = "https://localhost:7246/orders/" + userID;
+// export const FetchMyOrders = async (userID) => {
+//     let url = "https://localhost:7246/orders/" + userID;
 
-    return await fetch(url)
+//     return await fetch(url)
+//         .then((response) => response.json())
+//         .then((data) => {
+//             let orders = [];
+//             if (data !== null) {
+//                 data.forEach((item) => {
+//                     let order = {
+//                         orderID: item.id,
+//                         userID: item.userId,
+//                         price: item.orderPrice,
+//                         fullName: item.fullName,
+//                         address: item.address,
+//                         zipCode: item.zipCode,
+//                         city: item.city,
+//                     };
+//                     orders.push(order);
+//                 });
+//             }
+//             return orders;
+//         })
+//         .catch(() => {
+//             console.log("a");
+//             return null;
+//         });
+// };
+
+export const FetchMyOrders = async (userToken) => {
+    let url = "https://localhost:7246/orders";
+
+    return await fetch(url, {
+        method: "GET",
+        headers: {
+            authorization: `bearer ${userToken}`,
+        },
+    })
         .then((response) => response.json())
         .then((data) => {
             let orders = [];
-
             if (data !== null) {
                 data.forEach((item) => {
                     let order = {
@@ -148,9 +173,9 @@ export const FetchMyOrders = async (userID) => {
             }
             return orders;
         })
-        .catch((error) => {
-            console.log(error);
-            return [];
+        .catch(() => {
+            console.log("a");
+            return null;
         });
 };
 
@@ -169,8 +194,7 @@ export const FetchOrderDetails = async (orderID) => {
 
             return order;
         })
-        .catch((error) => {
-            console.log(error);
-            return error;
+        .catch(() => {
+            return null;
         });
 };

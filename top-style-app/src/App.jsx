@@ -11,6 +11,7 @@ import SignUpPage from "./views/SignUpPage/SignUpPage";
 import CheckoutPage from "./views/CheckoutPage/CheckoutPage";
 import MyOrdersPage from "./views/MyOrdersPage/MyOrdersPage";
 import OrderPage from "./views/OrderPage/OrderPage";
+import Loader from "./components/Loader/Loader";
 
 const App = () => {
     return (
@@ -27,9 +28,30 @@ const App = () => {
                     <Route path="/basket" element={<CartPage />} />
                     <Route path="/sign-in" element={<SignInPage />} />
                     <Route path="/sign-up" element={<SignUpPage />} />
-                    <Route path="/checkout" element={<CheckoutPage />} />
-                    <Route path="/my-orders" element={<MyOrdersPage />} />
-                    <Route path="/my-orders/:orderID" element={<OrderPage />} />
+                    <Route
+                        path="/checkout"
+                        element={
+                            <Loader>
+                                <CheckoutPage />
+                            </Loader>
+                        }
+                    />
+                    <Route
+                        path="/my-orders"
+                        element={
+                            <Loader>
+                                <MyOrdersPage />
+                            </Loader>
+                        }
+                    />
+                    <Route
+                        path="/my-orders/:orderID"
+                        element={
+                            <Loader>
+                                <OrderPage />
+                            </Loader>
+                        }
+                    />
                 </Routes>
             </AppProvider>
         </>

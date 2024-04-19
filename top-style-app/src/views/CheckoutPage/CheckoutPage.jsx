@@ -22,6 +22,8 @@ const CheckoutPage = () => {
         setDataIsOk,
         LoadUser,
         isUserValid,
+        isPlaceOrderError,
+        setIsPlaceOrderError,
     } = useContext(AppContext);
 
     const navigate = useNavigate();
@@ -69,6 +71,7 @@ const CheckoutPage = () => {
     };
 
     const handlePlaceOrder = () => {
+        setIsPlaceOrderError(false);
         if (!isUserValid(currentUser)) {
             LoadUser();
             navigate("/sign-in");
@@ -169,6 +172,13 @@ const CheckoutPage = () => {
                                     {!dataIsOk ? (
                                         <Alert severity="error">
                                             Incorrect delivery input.
+                                        </Alert>
+                                    ) : (
+                                        <></>
+                                    )}
+                                    {isPlaceOrderError ? (
+                                        <Alert severity="error">
+                                            An error has occurred.
                                         </Alert>
                                     ) : (
                                         <></>

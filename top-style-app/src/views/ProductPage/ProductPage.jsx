@@ -11,6 +11,7 @@ import { AppContext } from "../../context/AppProvider";
 import CircularProgress from "@mui/material/CircularProgress";
 import "./ProductPage.css";
 import { Box } from "@mui/material";
+import { Alert } from "@mui/material";
 
 const ProductPage = () => {
     const { product, GetProduct, AddProductToBasket } = useContext(AppContext);
@@ -32,74 +33,81 @@ const ProductPage = () => {
             >
                 {"<"} Back to front page
             </NavLink>
-            <Card
-                sx={{
-                    maxWidth: "100vw",
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                }}
-            >
-                {productID == product?.ID ? (
-                    <>
-                        <CardMedia
-                            component="img"
-                            alt="product image"
-                            height="140"
-                            image={product?.Image}
+            {product === null ? (
+                <Alert severity="error">En error occurred.</Alert>
+            ) : (
+                <Card
+                    sx={{
+                        maxWidth: "100vw",
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                    }}
+                >
+                    {productID == product?.ID ? (
+                        <>
+                            <CardMedia
+                                component="img"
+                                alt="product image"
+                                height="140"
+                                image={product?.Image}
+                                sx={{
+                                    minHeight: "500px",
+                                    width: {
+                                        xs: "100%",
+                                        sm: "60%",
+                                        md: "50%",
+                                        lg: "50%",
+                                    },
+                                }}
+                            />
+                            <div>
+                                <CardContent
+                                    sx={{
+                                        textAlign: "left",
+                                        marginLeft: "20px",
+                                    }}
+                                >
+                                    <Typography
+                                        gutterBottom
+                                        variant="h5"
+                                        component="div"
+                                    >
+                                        {product?.Name}
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                    >
+                                        {product?.Description}
+                                    </Typography>
+                                </CardContent>
+                                <CardActions sx={{ marginLeft: "30px" }}>
+                                    <Button
+                                        variant="contained"
+                                        size="small"
+                                        onClick={handleAddToBasket}
+                                    >
+                                        Add to basket
+                                    </Button>
+                                </CardActions>
+                            </div>
+                        </>
+                    ) : (
+                        <Box
                             sx={{
-                                minHeight: "500px",
-                                width: {
-                                    xs: "100%",
-                                    sm: "60%",
-                                    md: "50%",
-                                    lg: "50%",
-                                },
+                                width: "100%",
+                                height: "400px",
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                alignItems: "center",
                             }}
-                        />
-                        <div>
-                            <CardContent
-                                sx={{ textAlign: "left", marginLeft: "20px" }}
-                            >
-                                <Typography
-                                    gutterBottom
-                                    variant="h5"
-                                    component="div"
-                                >
-                                    {product?.Name}
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                >
-                                    {product?.Description}
-                                </Typography>
-                            </CardContent>
-                            <CardActions sx={{ marginLeft: "30px" }}>
-                                <Button
-                                    variant="contained"
-                                    size="small"
-                                    onClick={handleAddToBasket}
-                                >
-                                    Add to basket
-                                </Button>
-                            </CardActions>
-                        </div>
-                    </>
-                ) : (
-                    <Box
-                        sx={{
-                            width: "100%",
-                            height: "400px",
-                            display: "flex",
-                            flexDirection: "row",
-                            justifyContent: "center",
-                            alignItems: "center",
-                        }}
-                    >
-                        <CircularProgress color="secondary" size="6rem" />
-                    </Box>
-                )}
-            </Card>
+                        >
+                            <CircularProgress color="secondary" size="6rem" />
+                        </Box>
+                    )}
+                </Card>
+            )}
         </div>
     );
 };

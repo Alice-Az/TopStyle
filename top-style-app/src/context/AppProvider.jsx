@@ -32,16 +32,27 @@ const AppProvider = (props) => {
 
     const [myOrders, setMyOrders] = useState([]);
 
+    const [isFetchOrdersError, setIsFetchOrdersError] = useState(false);
+
     const [orderIsPlaced, setOrderIsPlaced] = useState(false);
+
+    const [isPlaceOrderError, setIsPlaceOrderError] = useState(false);
 
     const [orderDetails, setOrderDetails] = useState(null);
 
     const [isSessionExpired, setIsSessionExpired] = useState(false);
 
+    const [isUserFetched, setIsUserFetched] = useState(false);
+
     const LoginAttempt = (loginInfo) => {
         LogIn(loginInfo).then((data) => {
             if (data !== null) {
-                setCurrentUser(data);
+                // setCurrentUser(data);
+                setCurrentUser({
+                    userID: "1",
+                    userEmail: "alice@gmail.com",
+                    userToken: data,
+                });
                 setIsSessionExpired(false);
                 localStorage.setItem("currentUser", data);
             } else setLoginError(true);
@@ -67,6 +78,7 @@ const AppProvider = (props) => {
                             "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
                         ],
                     exp: decodedToken.exp,
+                    userToken: token,
                 };
                 setCurrentUser(user);
             } else {
@@ -78,6 +90,7 @@ const AppProvider = (props) => {
             setCurrentUser(null);
             setIsSessionExpired(false);
         }
+        setIsUserFetched(true);
     };
 
     const isUserValid = (user) => {
@@ -86,13 +99,11 @@ const AppProvider = (props) => {
             console.log(user.exp > currentTimestamp);
             return user.exp > currentTimestamp;
         }
-        console.log("lafja");
         return false;
     };
 
     const CheckTokenValidity = (token) => {
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken);
         const currentTimestamp = Math.floor(Date.now() / 1000);
         return decodedToken.exp > currentTimestamp ? decodedToken : null;
     };
@@ -140,26 +151,55 @@ const AppProvider = (props) => {
 
     const GetProduct = (productID) => {
         FetchProduct(productID).then((data) => {
-            setProduct(data !== undefined ? data : null);
+            setProduct(data === null ? null : data);
         });
     };
 
     const PlaceOrder = (order) => {
-        PostOrder(order).then(() => {
-            setOrderIsPlaced(true);
-            EmptyBasket();
+        PostOrder(order).then((data) => {
+            if (data !== null) {
+                setOrderIsPlaced(true);
+                EmptyBasket();
+            } else setIsPlaceOrderError(true);
         });
     };
 
-    const GetMyOrders = (userID) => {
-        FetchMyOrders(userID).then((data) => {
-            setMyOrders(data);
+    // const GetMyOrders = (userID) => {
+    //     setIsFetchOrdersError(false);
+    //     FetchMyOrders(userID).then((data) => {
+    //         if (data !== null) {
+    //             setMyOrders(data);
+    //         } else {
+    //             setIsFetchOrdersError(true);
+    //             console.log(isFetchOrdersError);
+    //         }
+    //     });
+    // };
+
+    const GetMyOrders = (userToken) => {
+        setIsFetchOrdersError(false);
+        FetchMyOrders(userToken).then((data) => {
+            if (data !== null) {
+                setMyOrders(data);
+            } else {
+                setIsFetchOrdersError(true);
+                console.log(isFetchOrdersError);
+            }
         });
     };
 
     const GetOrderDetails = (orderID) => {
+        setIsFetchOrdersError(false);
         FetchOrderDetails(orderID).then((data) => {
-            setOrderDetails(data);
+            if (data !== null) {
+                data.Products = data.Products.map((product) => ({
+                    ...product,
+                    key: uuid(),
+                }));
+                setOrderDetails(data);
+            } else {
+                setIsFetchOrdersError(true);
+            }
         });
     };
 
@@ -197,6 +237,13 @@ const AppProvider = (props) => {
                 orderDetails,
                 isSessionExpired,
                 setIsSessionExpired,
+                isPlaceOrderError,
+                setIsPlaceOrderError,
+                isFetchOrdersError,
+                setIsFetchOrdersError,
+                isUserFetched,
+                setIsUserFetched,
+                setProducts,
             }}
         >
             {props.children}
