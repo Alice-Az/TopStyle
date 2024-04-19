@@ -1,5 +1,8 @@
+const baseUrl = "https://alice-topstyle-api.azurewebsites.net/";
+// const baseUrl = "https://localhost:7246/";
+
 export const FetchProducts = async (input) => {
-    let url = "https://localhost:7246/products?search=" + (input ?? "");
+    let url = `${baseUrl}products?search=` + (input ?? "");
 
     return await fetch(url)
         .then((response) => response.json())
@@ -26,7 +29,7 @@ export const FetchProducts = async (input) => {
 };
 
 export const FetchProduct = async (productID) => {
-    let url = "https://localhost:7246/product/" + productID;
+    let url = `${baseUrl}product/` + productID;
 
     return await fetch(url)
         .then((response) => response.json())
@@ -51,7 +54,7 @@ export const FetchProduct = async (productID) => {
 };
 
 export const CreateUser = async (userInfo) => {
-    let url = "https://localhost:7246/user/";
+    let url = `${baseUrl}user`;
 
     return await fetch(url, {
         method: "POST",
@@ -74,7 +77,7 @@ export const CreateUser = async (userInfo) => {
 };
 
 export const LogIn = async (userInfo) => {
-    let url = "https://localhost:7246/login/";
+    let url = `${baseUrl}login`;
 
     return await fetch(url, {
         method: "POST",
@@ -91,7 +94,7 @@ export const LogIn = async (userInfo) => {
 };
 
 export const PostOrder = async (order) => {
-    let url = "https://localhost:7246/order/";
+    let url = `${baseUrl}order`;
 
     return await fetch(url, {
         method: "POST",
@@ -120,7 +123,7 @@ export const PostOrder = async (order) => {
 };
 
 export const FetchMyOrders = async () => {
-    let url = "https://localhost:7246/orders";
+    let url = `${baseUrl}orders`;
     return await fetch(url, {
         method: "GET",
         headers: {
@@ -152,7 +155,7 @@ export const FetchMyOrders = async () => {
 };
 
 export const FetchOrderDetails = async (orderID) => {
-    let url = "https://localhost:7246/order/" + orderID;
+    let url = `${baseUrl}order/` + orderID;
     return await fetch(url, {
         method: "GET",
         headers: {
