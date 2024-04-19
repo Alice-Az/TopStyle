@@ -15,8 +15,7 @@ const MyOrdersPage = () => {
 
     useEffect(() => {
         if (currentUser !== null) {
-            console.log(currentUser);
-            GetMyOrders(currentUser.userToken);
+            GetMyOrders(currentUser);
         }
     }, []);
 

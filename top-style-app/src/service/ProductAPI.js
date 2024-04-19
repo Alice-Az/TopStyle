@@ -90,12 +90,15 @@ export const LogIn = async (userInfo) => {
         });
 };
 
-export const PostOrder = async (order) => {
+export const PostOrder = async (order, token) => {
     let url = "https://localhost:7246/order/";
 
     return await fetch(url, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+            authorization: `bearer ${token}`,
+            "content-type": "application/json",
+        },
         body: JSON.stringify(order),
     })
         .then((response) => response.json())
@@ -115,35 +118,6 @@ export const PostOrder = async (order) => {
             return null;
         });
 };
-
-// export const FetchMyOrders = async (userID) => {
-//     let url = "https://localhost:7246/orders/" + userID;
-
-//     return await fetch(url)
-//         .then((response) => response.json())
-//         .then((data) => {
-//             let orders = [];
-//             if (data !== null) {
-//                 data.forEach((item) => {
-//                     let order = {
-//                         orderID: item.id,
-//                         userID: item.userId,
-//                         price: item.orderPrice,
-//                         fullName: item.fullName,
-//                         address: item.address,
-//                         zipCode: item.zipCode,
-//                         city: item.city,
-//                     };
-//                     orders.push(order);
-//                 });
-//             }
-//             return orders;
-//         })
-//         .catch(() => {
-//             console.log("a");
-//             return null;
-//         });
-// };
 
 export const FetchMyOrders = async (userToken) => {
     let url = "https://localhost:7246/orders";
@@ -174,15 +148,19 @@ export const FetchMyOrders = async (userToken) => {
             return orders;
         })
         .catch(() => {
-            console.log("a");
             return null;
         });
 };
 
-export const FetchOrderDetails = async (orderID) => {
+export const FetchOrderDetails = async (orderID, token) => {
     let url = "https://localhost:7246/order/" + orderID;
 
-    return await fetch(url)
+    return await fetch(url, {
+        method: "GET",
+        headers: {
+            authorization: `bearer ${token}`,
+        },
+    })
         .then((response) => response.json())
         .then((data) => {
             let order = {

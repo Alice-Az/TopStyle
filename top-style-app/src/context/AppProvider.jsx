@@ -47,12 +47,7 @@ const AppProvider = (props) => {
     const LoginAttempt = (loginInfo) => {
         LogIn(loginInfo).then((data) => {
             if (data !== null) {
-                // setCurrentUser(data);
-                setCurrentUser({
-                    userID: "1",
-                    userEmail: "alice@gmail.com",
-                    userToken: data,
-                });
+                setCurrentUser(data);
                 setIsSessionExpired(false);
                 localStorage.setItem("currentUser", data);
             } else setLoginError(true);
@@ -69,17 +64,7 @@ const AppProvider = (props) => {
         if (token !== null) {
             const decodedToken = CheckTokenValidity(token);
             if (decodedToken !== null) {
-                const user = {
-                    userID: decodedToken[
-                        "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/sid"
-                    ],
-                    userEmail:
-                        decodedToken[
-                            "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
-                        ],
-                    exp: decodedToken.exp,
-                    userToken: token,
-                };
+                const user = token;
                 setCurrentUser(user);
             } else {
                 setCurrentUser(null);
@@ -93,11 +78,9 @@ const AppProvider = (props) => {
         setIsUserFetched(true);
     };
 
-    const isUserValid = (user) => {
-        if (user !== null) {
-            const currentTimestamp = Math.floor(Date.now() / 1000);
-            console.log(user.exp > currentTimestamp);
-            return user.exp > currentTimestamp;
+    const isUserValid = (userToken) => {
+        if (userToken !== null) {
+            return CheckTokenValidity(userToken);
         }
         return false;
     };
@@ -156,25 +139,14 @@ const AppProvider = (props) => {
     };
 
     const PlaceOrder = (order) => {
-        PostOrder(order).then((data) => {
+        const token = localStorage.getItem("currentUser");
+        PostOrder(order, token).then((data) => {
             if (data !== null) {
                 setOrderIsPlaced(true);
                 EmptyBasket();
             } else setIsPlaceOrderError(true);
         });
     };
-
-    // const GetMyOrders = (userID) => {
-    //     setIsFetchOrdersError(false);
-    //     FetchMyOrders(userID).then((data) => {
-    //         if (data !== null) {
-    //             setMyOrders(data);
-    //         } else {
-    //             setIsFetchOrdersError(true);
-    //             console.log(isFetchOrdersError);
-    //         }
-    //     });
-    // };
 
     const GetMyOrders = (userToken) => {
         setIsFetchOrdersError(false);
@@ -183,14 +155,14 @@ const AppProvider = (props) => {
                 setMyOrders(data);
             } else {
                 setIsFetchOrdersError(true);
-                console.log(isFetchOrdersError);
             }
         });
     };
 
     const GetOrderDetails = (orderID) => {
         setIsFetchOrdersError(false);
-        FetchOrderDetails(orderID).then((data) => {
+        const token = localStorage.getItem("currentUser");
+        FetchOrderDetails(orderID, token).then((data) => {
             if (data !== null) {
                 data.Products = data.Products.map((product) => ({
                     ...product,
