@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { NavLink } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../context/AppProvider";
 import { Alert } from "@mui/material";
 
@@ -18,14 +18,13 @@ const SignUpPage = () => {
         setUsernameTaken,
         userIsCreated,
         setUserIsCreated,
-        dataIsOk,
-        setDataIsOk,
     } = useContext(AppContext);
+
+    const [dataIsOk, setDataIsOk] = useState(true);
 
     useEffect(() => {
         setUsernameTaken(null);
         setUserIsCreated(false);
-        setDataIsOk(true);
     }, []);
 
     const CheckUserInput = (inputEmail, inputPassword) => {
@@ -130,10 +129,10 @@ const SignUpPage = () => {
                                 There is already an account registered with this
                                 email adress
                             </Alert>
-                        ) : !dataIsOk ? (
-                            <Alert severity="error">Incorrect input.</Alert>
                         ) : (
-                            <></>
+                            !dataIsOk && (
+                                <Alert severity="error">Incorrect input.</Alert>
+                            )
                         )}
                         <Button
                             type="submit"

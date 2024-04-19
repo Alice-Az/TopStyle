@@ -90,13 +90,13 @@ export const LogIn = async (userInfo) => {
         });
 };
 
-export const PostOrder = async (order, token) => {
+export const PostOrder = async (order) => {
     let url = "https://localhost:7246/order/";
 
     return await fetch(url, {
         method: "POST",
         headers: {
-            authorization: `bearer ${token}`,
+            authorization: `bearer ${GetToken()}`,
             "content-type": "application/json",
         },
         body: JSON.stringify(order),
@@ -119,13 +119,12 @@ export const PostOrder = async (order, token) => {
         });
 };
 
-export const FetchMyOrders = async (userToken) => {
+export const FetchMyOrders = async () => {
     let url = "https://localhost:7246/orders";
-
     return await fetch(url, {
         method: "GET",
         headers: {
-            authorization: `bearer ${userToken}`,
+            authorization: `bearer ${GetToken()}`,
         },
     })
         .then((response) => response.json())
@@ -152,13 +151,12 @@ export const FetchMyOrders = async (userToken) => {
         });
 };
 
-export const FetchOrderDetails = async (orderID, token) => {
+export const FetchOrderDetails = async (orderID) => {
     let url = "https://localhost:7246/order/" + orderID;
-
     return await fetch(url, {
         method: "GET",
         headers: {
-            authorization: `bearer ${token}`,
+            authorization: `bearer ${GetToken()}`,
         },
     })
         .then((response) => response.json())
@@ -169,10 +167,13 @@ export const FetchOrderDetails = async (orderID, token) => {
                 Price: data.orderPrice,
                 Products: data.products,
             };
-
             return order;
         })
         .catch(() => {
             return null;
         });
+};
+
+const GetToken = () => {
+    return localStorage.getItem("currentUser");
 };

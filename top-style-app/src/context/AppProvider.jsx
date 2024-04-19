@@ -6,7 +6,6 @@ import {
     CreateUser,
     PostOrder,
     FetchMyOrders,
-    FetchOrderDetails,
 } from "../service/ProductAPI";
 import uuid from "react-uuid";
 import { jwtDecode } from "jwt-decode";
@@ -28,8 +27,6 @@ const AppProvider = (props) => {
 
     const [userIsCreated, setUserIsCreated] = useState(false);
 
-    const [dataIsOk, setDataIsOk] = useState(true);
-
     const [myOrders, setMyOrders] = useState([]);
 
     const [isFetchOrdersError, setIsFetchOrdersError] = useState(false);
@@ -37,8 +34,6 @@ const AppProvider = (props) => {
     const [orderIsPlaced, setOrderIsPlaced] = useState(false);
 
     const [isPlaceOrderError, setIsPlaceOrderError] = useState(false);
-
-    const [orderDetails, setOrderDetails] = useState(null);
 
     const [isSessionExpired, setIsSessionExpired] = useState(false);
 
@@ -139,8 +134,7 @@ const AppProvider = (props) => {
     };
 
     const PlaceOrder = (order) => {
-        const token = localStorage.getItem("currentUser");
-        PostOrder(order, token).then((data) => {
+        PostOrder(order).then((data) => {
             if (data !== null) {
                 setOrderIsPlaced(true);
                 EmptyBasket();
@@ -148,27 +142,11 @@ const AppProvider = (props) => {
         });
     };
 
-    const GetMyOrders = (userToken) => {
+    const GetMyOrders = () => {
         setIsFetchOrdersError(false);
-        FetchMyOrders(userToken).then((data) => {
+        FetchMyOrders().then((data) => {
             if (data !== null) {
                 setMyOrders(data);
-            } else {
-                setIsFetchOrdersError(true);
-            }
-        });
-    };
-
-    const GetOrderDetails = (orderID) => {
-        setIsFetchOrdersError(false);
-        const token = localStorage.getItem("currentUser");
-        FetchOrderDetails(orderID, token).then((data) => {
-            if (data !== null) {
-                data.Products = data.Products.map((product) => ({
-                    ...product,
-                    key: uuid(),
-                }));
-                setOrderDetails(data);
             } else {
                 setIsFetchOrdersError(true);
             }
@@ -198,15 +176,11 @@ const AppProvider = (props) => {
                 SignUp,
                 userIsCreated,
                 setUserIsCreated,
-                dataIsOk,
-                setDataIsOk,
                 PlaceOrder,
                 orderIsPlaced,
                 setOrderIsPlaced,
                 GetMyOrders,
                 myOrders,
-                GetOrderDetails,
-                orderDetails,
                 isSessionExpired,
                 setIsSessionExpired,
                 isPlaceOrderError,

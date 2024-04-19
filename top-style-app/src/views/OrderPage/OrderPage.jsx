@@ -2,20 +2,34 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { NavLink, useParams } from "react-router-dom";
-import { useContext, useEffect } from "react";
-import { AppContext } from "../../context/AppProvider";
+import { useEffect, useState } from "react";
 import ProductRow from "./ProductRow";
 import "./OrderPage.css";
 import { Alert } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { FetchOrderDetails } from "../../service/ProductAPI";
+import uuid from "react-uuid";
 
 const OrderPage = () => {
-    const { GetOrderDetails, orderDetails, isFetchOrdersError } =
-        useContext(AppContext);
-
     let { orderID } = useParams();
 
+    const [isLoading, setIsLoading] = useState(true);
+    const [orderDetails, setOrderDetails] = useState();
+    const [isOrderError, setOrderError] = useState(false);
+
     useEffect(() => {
-        GetOrderDetails(orderID);
+        FetchOrderDetails(orderID).then((data) => {
+            if (data !== null) {
+                data.Products = data.Products.map((product) => ({
+                    ...product,
+                    key: uuid(),
+                }));
+                setOrderDetails(data);
+                setIsLoading(false);
+            } else {
+                setOrderError(true);
+            }
+        });
     }, []);
 
     return (
@@ -23,7 +37,7 @@ const OrderPage = () => {
             <NavLink to="/my-orders" style={{ color: "rgb(83, 95, 105)" }}>
                 {"<"} Back to my orders
             </NavLink>
-            {!isFetchOrdersError ? (
+            {!isOrderError ? (
                 <Box sx={{ flexGrow: 1 }}>
                     <Grid
                         container
@@ -31,13 +45,26 @@ const OrderPage = () => {
                         sx={{ paddingBottom: "40px", marginTop: "40px" }}
                     >
                         <Grid item xs={12}>
-                            {orderDetails !== null &&
-                            orderDetails.orderID == orderID ? (
+                            {!isLoading ? (
                                 orderDetails.Products.map((item) => (
                                     <ProductRow product={item} key={item.key} />
                                 ))
                             ) : (
-                                <></>
+                                <Box
+                                    sx={{
+                                        width: "100%",
+                                        height: "400px",
+                                        display: "flex",
+                                        flexDirection: "row",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                    }}
+                                >
+                                    <CircularProgress
+                                        color="secondary"
+                                        size="6rem"
+                                    />
+                                </Box>
                             )}
                         </Grid>
                     </Grid>

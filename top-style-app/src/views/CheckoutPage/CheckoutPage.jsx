@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { NavLink, useNavigate } from "react-router-dom";
 import "./CheckoutPage.css";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../context/AppProvider";
 import { Button } from "@mui/material";
 import { Alert } from "@mui/material";
@@ -18,8 +18,6 @@ const CheckoutPage = () => {
         PlaceOrder,
         orderIsPlaced,
         setOrderIsPlaced,
-        dataIsOk,
-        setDataIsOk,
         LoadUser,
         isUserValid,
         isPlaceOrderError,
@@ -28,9 +26,10 @@ const CheckoutPage = () => {
 
     const navigate = useNavigate();
 
+    const [dataIsOk, setDataIsOk] = useState(true);
+
     useEffect(() => {
         setOrderIsPlaced(false);
-        setDataIsOk(true);
         LoadUser();
     }, []);
 
@@ -169,19 +168,15 @@ const CheckoutPage = () => {
                                         inputRef={city}
                                         sx={{ margin: "5px 0px" }}
                                     ></TextField>
-                                    {!dataIsOk ? (
+                                    {!dataIsOk && (
                                         <Alert severity="error">
                                             Incorrect delivery input.
                                         </Alert>
-                                    ) : (
-                                        <></>
                                     )}
-                                    {isPlaceOrderError ? (
+                                    {isPlaceOrderError && (
                                         <Alert severity="error">
                                             An error has occurred.
                                         </Alert>
-                                    ) : (
-                                        <></>
                                     )}
                                 </div>
                             </div>
