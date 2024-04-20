@@ -12,10 +12,12 @@ import CheckoutPage from "./views/CheckoutPage/CheckoutPage";
 import MyOrdersPage from "./views/MyOrdersPage/MyOrdersPage";
 import OrderPage from "./views/OrderPage/OrderPage";
 import Loader from "./components/Loader/Loader";
+import AppTheme from "./themes/AppTheme";
+import { ThemeProvider } from "@mui/material/styles";
 
 const App = () => {
     return (
-        <>
+        <ThemeProvider theme={AppTheme}>
             <AppProvider>
                 <Starter />
                 <TopBar />
@@ -54,7 +56,7 @@ const App = () => {
                     />
                 </Routes>
             </AppProvider>
-        </>
+        </ThemeProvider>
     );
 };
 
