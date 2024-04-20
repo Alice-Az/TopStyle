@@ -33,3 +33,23 @@
     margin: 2px 0;
 }
 
+.confirm-button {
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
+}
+
+@media screen and (max-width: 600px) {
+    .checkout-info {
+        flex-direction: column;
+    }
+    .basket-review {
+        width: 100%;
+    }
+    .delivery-info {
+        width: 100%;
+    }
+    .confirm-button {
+        width: 100%;
+    }
+}

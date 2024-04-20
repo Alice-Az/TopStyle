@@ -181,12 +181,8 @@ const CheckoutPage = () => {
                                 </div>
                             </div>
                             <Button
+                                className="confirm-button"
                                 variant="contained"
-                                sx={{
-                                    width: "30%",
-                                    marginLeft: "35%",
-                                    marginRight: "35%",
-                                }}
                                 onClick={handlePlaceOrder}
                             >
                                 Confirm and pay
